@@ -70,9 +70,261 @@
   <div class="container">
     <p class="eyebrow center section-eyebrow">A Tour of the Buildings</p>
     <h2 class="section-title">What you will find when you arrive.</h2>
+
+    <div class="site-plan-wrap">
+      <figure class="site-plan">
+        <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="A hand-drawn site plan of Stillwater Ranch with ten numbered buildings.">
+          <defs>
+            <pattern id="sage" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+              <circle cx="3"  cy="6"  r="0.5" fill="#8a7a5a" opacity="0.35"/>
+              <circle cx="15" cy="10" r="0.4" fill="#8a7a5a" opacity="0.3"/>
+              <circle cx="9"  cy="17" r="0.55" fill="#8a7a5a" opacity="0.3"/>
+            </pattern>
+          </defs>
+
+          <!-- valley floor texture -->
+          <rect x="80" y="100" width="440" height="780" fill="url(#sage)"/>
+
+          <!-- title -->
+          <text x="300" y="56" text-anchor="middle" font-style="italic" font-size="26" fill="#1f1a13" font-family="serif">Stillwater Ranch</text>
+          <text class="map-meta" x="300" y="76" text-anchor="middle" font-size="10">A SITE PLAN · DRAWN BY HAND · MMXIX</text>
+
+          <!-- compass rose, top right -->
+          <g transform="translate(540, 78)">
+            <circle r="18" fill="#faf2dd" stroke="#3e3527" stroke-width="0.8"/>
+            <path d="M 0 -18 L -3 0 L 0 4 L 3 0 Z" fill="#3e3527"/>
+            <path d="M 0 18 L -3 0 L 0 -4 L 3 0 Z" fill="none" stroke="#3e3527" stroke-width="0.6"/>
+            <text x="0" y="-22" text-anchor="middle" font-size="9" font-style="italic" fill="#3e3527">N</text>
+            <text x="0" y="29" text-anchor="middle" font-size="8" font-style="italic" fill="#5a4a32">S</text>
+          </g>
+
+          <!-- Steens mountain hatching, east edge -->
+          <g stroke="#5a4a32" stroke-width="0.8" fill="none" opacity="0.85">
+            <line x1="500" y1="120" x2="540" y2="105"/><line x1="510" y1="140" x2="555" y2="125"/>
+            <line x1="500" y1="160" x2="545" y2="150"/><line x1="510" y1="180" x2="555" y2="170"/>
+            <line x1="500" y1="200" x2="545" y2="195"/><line x1="510" y1="220" x2="555" y2="215"/>
+            <line x1="500" y1="240" x2="545" y2="235"/><line x1="500" y1="260" x2="555" y2="255"/>
+            <line x1="510" y1="280" x2="545" y2="275"/><line x1="500" y1="300" x2="555" y2="295"/>
+            <line x1="510" y1="320" x2="545" y2="315"/><line x1="500" y1="340" x2="555" y2="335"/>
+            <line x1="500" y1="360" x2="545" y2="358"/><line x1="510" y1="380" x2="555" y2="378"/>
+            <line x1="500" y1="400" x2="545" y2="398"/><line x1="510" y1="420" x2="555" y2="418"/>
+            <line x1="500" y1="440" x2="545" y2="438"/><line x1="510" y1="460" x2="555" y2="455"/>
+            <line x1="500" y1="480" x2="545" y2="478"/><line x1="500" y1="500" x2="555" y2="500"/>
+            <line x1="510" y1="520" x2="545" y2="520"/><line x1="500" y1="540" x2="555" y2="538"/>
+            <line x1="510" y1="560" x2="545" y2="555"/><line x1="500" y1="580" x2="545" y2="578"/>
+            <line x1="510" y1="600" x2="555" y2="598"/><line x1="500" y1="620" x2="555" y2="618"/>
+            <line x1="510" y1="640" x2="545" y2="638"/><line x1="500" y1="660" x2="555" y2="655"/>
+            <line x1="510" y1="680" x2="545" y2="675"/><line x1="500" y1="700" x2="545" y2="695"/>
+            <line x1="510" y1="720" x2="555" y2="715"/><line x1="500" y1="740" x2="545" y2="735"/>
+            <line x1="510" y1="760" x2="545" y2="755"/><line x1="500" y1="780" x2="555" y2="775"/>
+          </g>
+          <text class="map-meta" x="558" y="450" font-size="10" transform="rotate(-90 558 450)" text-anchor="middle">THE STEENS · 9,700 FT</text>
+
+          <!-- west valley wall, lighter -->
+          <path d="M 90 110 Q 80 250 95 400 Q 100 600 85 780" stroke="#a39377" stroke-width="0.9" fill="none"/>
+          <path d="M 96 120 Q 88 250 100 400 Q 105 600 92 780" stroke="#a39377" stroke-width="0.5" fill="none" opacity="0.55"/>
+
+          <!-- east edge contour beside the Steens -->
+          <path d="M 500 110 Q 510 250 495 400 Q 490 600 505 780" stroke="#5a4a32" stroke-width="1" fill="none"/>
+
+          <!-- spring at the head of the valley -->
+          <g transform="translate(210, 132)">
+            <ellipse rx="14" ry="9" fill="#a3c1a8" opacity="0.55" stroke="#4a5d3a" stroke-width="0.7"/>
+            <ellipse rx="20" ry="13" fill="none" stroke="#4a5d3a" stroke-width="0.4" opacity="0.6"/>
+            <text class="map-label" x="0" y="-16" text-anchor="middle" font-size="11">the spring</text>
+          </g>
+
+          <!-- the road in (dashed, from south, ending at the gatehouse and continuing to the compound) -->
+          <path d="M 295 895 Q 290 870 305 850 Q 318 830 305 810 L 300 800"
+                stroke="#5a4a32" stroke-width="2" stroke-dasharray="5 3" fill="none"/>
+          <path d="M 300 778 Q 320 740 305 700 Q 290 660 312 620 Q 326 580 322 545"
+                stroke="#5a4a32" stroke-width="1.4" stroke-dasharray="4 3" fill="none" opacity="0.85"/>
+          <text class="map-label" x="338" y="868" font-size="11">the road in</text>
+          <text class="map-meta" x="338" y="884" font-size="8.5">(no road out)</text>
+
+          <!-- internal footpaths -->
+          <g stroke="#7a6c50" stroke-width="0.7" fill="none" stroke-dasharray="2 2" opacity="0.7">
+            <path d="M 300 510 Q 240 540 175 580"/>
+            <path d="M 360 510 Q 400 560 422 615"/>
+            <path d="M 290 460 Q 230 380 175 290"/>
+            <path d="M 175 280 Q 240 220 295 165"/>
+            <path d="M 290 460 Q 250 320 215 145"/>
+          </g>
+
+          <!-- ============ buildings (drawn beneath markers) ============ -->
+
+          <!-- 10. Cemetery -->
+          <g transform="translate(270, 365)">
+            <rect x="-18" y="-12" width="36" height="22" fill="none" stroke="#3e3527" stroke-width="0.8"/>
+            <line x1="-12" y1="-4" x2="-12" y2="6" stroke="#3e3527" stroke-width="0.6"/>
+            <line x1="-15" y1="-1" x2="-9" y2="-1" stroke="#3e3527" stroke-width="0.6"/>
+            <line x1="0"   y1="-4" x2="0"   y2="6" stroke="#3e3527" stroke-width="0.6"/>
+            <line x1="-3"  y1="-1" x2="3"   y2="-1" stroke="#3e3527" stroke-width="0.6"/>
+            <line x1="12"  y1="-4" x2="12"  y2="6" stroke="#3e3527" stroke-width="0.6"/>
+            <line x1="9"   y1="-1" x2="15"  y2="-1" stroke="#3e3527" stroke-width="0.6"/>
+          </g>
+
+          <!-- 3. Refectory (with chimney) -->
+          <g transform="translate(270, 440)">
+            <path d="M -16 8 L 16 8 L 16 -2 L 0 -10 L -16 -2 Z" fill="#faf2dd" stroke="#3e3527" stroke-width="1"/>
+            <line x1="-8" y1="-6" x2="-8" y2="-14" stroke="#3e3527" stroke-width="0.7"/>
+          </g>
+
+          <!-- 4. Long House -->
+          <g transform="translate(380, 440)">
+            <path d="M -22 8 L 22 8 L 22 -2 L 0 -10 L -22 -2 Z" fill="#faf2dd" stroke="#3e3527" stroke-width="1"/>
+          </g>
+
+          <!-- 9. Bell Tower -->
+          <g transform="translate(325, 510)">
+            <rect x="-5" y="-10" width="10" height="20" fill="#faf2dd" stroke="#3e3527" stroke-width="0.8"/>
+            <path d="M -8 -10 L 8 -10 L 0 -18 Z" fill="#faf2dd" stroke="#3e3527" stroke-width="0.8"/>
+          </g>
+
+          <!-- 2. Letterhouse -->
+          <g transform="translate(400, 540)">
+            <rect x="-12" y="-8" width="24" height="16" fill="#faf2dd" stroke="#3e3527" stroke-width="1"/>
+            <path d="M -12 -8 L 0 0 L 12 -8" fill="none" stroke="#3e3527" stroke-width="0.6"/>
+          </g>
+
+          <!-- 7. Steward Houses (cluster of 3) -->
+          <g transform="translate(170, 290)" stroke="#3e3527" stroke-width="0.9" fill="#faf2dd">
+            <path d="M -22 6 L -12 6 L -12 -2 L -17 -7 L -22 -2 Z"/>
+            <path d="M -5  6 L  5  6 L  5 -2 L  0 -7 L -5 -2 Z"/>
+            <path d="M 12  6 L 22  6 L 22 -2 L 17 -7 L 12 -2 Z"/>
+          </g>
+
+          <!-- 5. Hearth Cabins (cluster along west spring path) -->
+          <g transform="translate(160, 580)" stroke="#3e3527" stroke-width="0.8" fill="#faf2dd">
+            <path d="M -28 4 L -22 4 L -22 -2 L -25 -5 L -28 -2 Z"/>
+            <path d="M -16 8 L -10 8 L -10  2 L -13 -1 L -16  2 Z"/>
+            <path d="M  -2 4 L   4 4 L   4 -2 L   1 -5 L  -2 -2 Z"/>
+            <path d="M  12 8 L  18 8 L  18  2 L  15 -1 L  12  2 Z"/>
+            <path d="M  24 4 L  30 4 L  30 -2 L  27 -5 L  24 -2 Z"/>
+          </g>
+
+          <!-- 6. Initiate Cabins (in orchard) -->
+          <g transform="translate(420, 620)">
+            <g fill="#4a5d3a" opacity="0.55">
+              <circle cx="-30" cy="-12" r="3.5"/>
+              <circle cx="-22" cy="10"  r="3"/>
+              <circle cx="-10" cy="-16" r="3.5"/>
+              <circle cx="22"  cy="-14" r="3"/>
+              <circle cx="30"  cy="8"   r="3.5"/>
+              <circle cx="-2"  cy="14"  r="3"/>
+            </g>
+            <g stroke="#3e3527" stroke-width="0.8" fill="#faf2dd">
+              <path d="M -22 6 L -16 6 L -16 0 L -19 -3 L -22 0 Z"/>
+              <path d="M -10 6 L  -4 6 L  -4 0 L  -7 -3 L -10 0 Z"/>
+              <path d="M   2 6 L   8 6 L   8 0 L   5 -3 L   2 0 Z"/>
+              <path d="M  14 6 L  20 6 L  20 0 L  17 -3 L  14 0 Z"/>
+            </g>
+          </g>
+
+          <!-- 1. Gatehouse -->
+          <g transform="translate(300, 790)">
+            <path d="M -10 6 L 10 6 L 10 -2 L 0 -8 L -10 -2 Z" fill="#faf2dd" stroke="#3e3527" stroke-width="1"/>
+          </g>
+
+          <!-- 8. Quiet Cabin (top, isolated, dashed outline) -->
+          <g transform="translate(300, 175)">
+            <path d="M -10 6 L 10 6 L 10 -2 L 0 -8 L -10 -2 Z" fill="#f3e9cf" stroke="#5e2410" stroke-width="0.9" stroke-dasharray="2 1.5"/>
+          </g>
+
+          <!-- ============ tappable markers (drawn last so they sit on top) ============ -->
+
+          <a href="#building-10" aria-label="See more about the Cemetery">
+            <circle class="marker-hit" cx="270" cy="365" r="20"/>
+            <circle class="marker-badge" cx="270" cy="365" r="13"/>
+            <text class="map-marker-num" x="270" y="370" text-anchor="middle" font-size="14">10</text>
+          </a>
+          <text class="map-label" x="207" y="369" font-size="13" text-anchor="end">cemetery</text>
+
+          <a href="#building-3" aria-label="See more about the Refectory">
+            <circle class="marker-hit" cx="270" cy="440" r="20"/>
+            <circle class="marker-badge" cx="270" cy="440" r="13"/>
+            <text class="map-marker-num" x="270" y="445" text-anchor="middle" font-size="14">3</text>
+          </a>
+          <text class="map-label" x="207" y="444" font-size="13" text-anchor="end">refectory</text>
+
+          <a href="#building-4" aria-label="See more about the Long House">
+            <circle class="marker-hit" cx="380" cy="440" r="20"/>
+            <circle class="marker-badge" cx="380" cy="440" r="13"/>
+            <text class="map-marker-num" x="380" y="445" text-anchor="middle" font-size="14">4</text>
+          </a>
+          <text class="map-label" x="395" y="468" font-size="13">long house</text>
+
+          <a href="#building-9" aria-label="See more about the Bell Tower">
+            <circle class="marker-hit" cx="325" cy="510" r="20"/>
+            <circle class="marker-badge" cx="325" cy="510" r="13"/>
+            <text class="map-marker-num" x="325" y="515" text-anchor="middle" font-size="14">9</text>
+          </a>
+          <text class="map-label" x="343" y="514" font-size="13">bell tower</text>
+
+          <a href="#building-2" aria-label="See more about the Letterhouse">
+            <circle class="marker-hit" cx="400" cy="540" r="20"/>
+            <circle class="marker-badge" cx="400" cy="540" r="13"/>
+            <text class="map-marker-num" x="400" y="545" text-anchor="middle" font-size="14">2</text>
+          </a>
+          <text class="map-label" x="418" y="563" font-size="13">letterhouse</text>
+
+          <a href="#building-5" aria-label="See more about the Hearth Cabins">
+            <circle class="marker-hit" cx="160" cy="580" r="20"/>
+            <circle class="marker-badge" cx="160" cy="580" r="13"/>
+            <text class="map-marker-num" x="160" y="585" text-anchor="middle" font-size="14">5</text>
+          </a>
+          <text class="map-label" x="160" y="612" text-anchor="middle" font-size="13">hearth cabins</text>
+
+          <a href="#building-6" aria-label="See more about the Initiate Cabins">
+            <circle class="marker-hit" cx="420" cy="620" r="20"/>
+            <circle class="marker-badge" cx="420" cy="620" r="13"/>
+            <text class="map-marker-num" x="420" y="625" text-anchor="middle" font-size="14">6</text>
+          </a>
+          <text class="map-label" x="420" y="660" text-anchor="middle" font-size="13">initiate cabins</text>
+
+          <a href="#building-7" aria-label="See more about the Steward Houses">
+            <circle class="marker-hit" cx="170" cy="290" r="20"/>
+            <circle class="marker-badge" cx="170" cy="290" r="13"/>
+            <text class="map-marker-num" x="170" y="295" text-anchor="middle" font-size="14">7</text>
+          </a>
+          <text class="map-label" x="170" y="320" text-anchor="middle" font-size="13">steward houses</text>
+
+          <a href="#building-8" class="marker-quiet" aria-label="See more about the Quiet Cabin">
+            <circle class="marker-hit" cx="300" cy="175" r="20"/>
+            <circle class="marker-badge" cx="300" cy="175" r="13"/>
+            <text class="map-marker-num" x="300" y="180" text-anchor="middle" font-size="14">8</text>
+          </a>
+          <text class="map-label" x="320" y="179" font-size="13">the quiet cabin</text>
+
+          <a href="#building-1" aria-label="See more about the Gatehouse">
+            <circle class="marker-hit" cx="300" cy="790" r="20"/>
+            <circle class="marker-badge" cx="300" cy="790" r="13"/>
+            <text class="map-marker-num" x="300" y="795" text-anchor="middle" font-size="14">1</text>
+          </a>
+          <text class="map-label" x="240" y="816" text-anchor="end" font-size="13">the gatehouse</text>
+
+          <!-- scale bar bottom-left -->
+          <g transform="translate(95, 870)">
+            <line x1="0"  y1="0" x2="40" y2="0" stroke="#3e3527" stroke-width="1.6"/>
+            <line x1="0"  y1="-3" x2="0"  y2="3" stroke="#3e3527" stroke-width="1"/>
+            <line x1="20" y1="-3" x2="20" y2="3" stroke="#3e3527" stroke-width="1"/>
+            <line x1="40" y1="-3" x2="40" y2="3" stroke="#3e3527" stroke-width="1"/>
+            <text x="0"  y="14" font-size="9"  font-style="italic" fill="#5a4a32">0</text>
+            <text x="20" y="14" font-size="9"  font-style="italic" fill="#5a4a32" text-anchor="middle">¼</text>
+            <text x="40" y="14" font-size="9"  font-style="italic" fill="#5a4a32" text-anchor="middle">½ mi</text>
+          </g>
+
+          <!-- caveat at bottom -->
+          <text class="map-meta" x="300" y="884" text-anchor="middle" font-size="10">we do not appear on satellite mapping</text>
+        </svg>
+        <figcaption class="site-plan-caption">Tap a number to read about each building. Drawn for the Letterhouse archive.</figcaption>
+      </figure>
+    </div>
+
     <div class="buildings">
 
-      <article class="building">
+      <article class="building" id="building-1">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M4 30 L36 30 L36 16 L20 6 L4 16 Z"/>
           <rect x="16" y="20" width="8" height="10"/>
@@ -81,7 +333,7 @@
         <p class="note">Where vehicles, devices, and ID are received.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-2">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <rect x="6" y="10" width="28" height="22"/>
           <path d="M6 10 L20 22 L34 10"/>
@@ -90,7 +342,7 @@
         <p class="note">Mail in and out. The Office of Correspondence.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-3">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M4 32 L36 32 L36 18 L20 8 L4 18 Z"/>
           <line x1="20" y1="8" x2="20" y2="2"/>
@@ -102,7 +354,7 @@
         <p class="note">Wood-fired Aga, three meals, two in silence.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-4">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M2 30 L38 30 L38 16 L20 6 L2 16 Z"/>
           <rect x="14" y="20" width="6" height="10"/>
@@ -112,7 +364,7 @@
         <p class="note">The Council convenes. Audiences are heard.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-5">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M8 32 L32 32 L32 18 L20 10 L8 18 Z"/>
           <line x1="20" y1="10" x2="20" y2="6"/>
@@ -122,7 +374,7 @@
         <p class="note">Visitations. Woodstove and kerosene lamp.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-6">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M6 30 L34 30 L34 16 L20 8 L6 16 Z"/>
           <circle cx="20" cy="22" r="3"/>
@@ -131,7 +383,7 @@
         <p class="note">Sabbatical &amp; Fallow. Each named for a tree.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-7">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M4 32 L36 32 L36 14 L20 4 L4 14 Z"/>
           <rect x="10" y="20" width="6" height="12"/>
@@ -141,7 +393,7 @@
         <p class="note">Permanent residences on the upper terrace.</p>
       </article>
 
-      <article class="building menace">
+      <article class="building menace" id="building-8">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M10 32 L30 32 L30 18 L20 10 L10 18 Z"/>
           <rect x="17" y="22" width="6" height="10"/>
@@ -150,7 +402,7 @@
         <p class="note">Furnished simply. By Council assignment.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-9">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <rect x="14" y="10" width="12" height="22"/>
           <path d="M10 10 L30 10 L20 2 Z"/>
@@ -160,7 +412,7 @@
         <p class="note">Five bells, cast 2004 in Aarle-Rixtel.</p>
       </article>
 
-      <article class="building">
+      <article class="building" id="building-10">
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <rect x="6" y="20" width="28" height="14"/>
           <path d="M6 20 Q20 14 34 20"/>
