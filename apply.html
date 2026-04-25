@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#efe6d3">
+<title>Apply — The Stillwater Fellowship</title>
+<meta name="description" content="The Letterhouse application. Begin your correspondence with the Fellowship.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23efe6d3'/%3E%3Ccircle cx='20' cy='18' r='12' fill='none' stroke='%231f2a14' stroke-width='1.5'/%3E%3Cline x1='6' y1='18' x2='34' y2='18' stroke='%231f2a14' stroke-width='1.5'/%3E%3Cline x1='20' y1='18' x2='20' y2='38' stroke='%231f2a14' stroke-width='1.5'/%3E%3Ccircle cx='20' cy='37' r='1.6' fill='%231f2a14'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="The Stillwater Fellowship — home">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="18" r="12" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="6"  y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="20" y1="18" x2="20" y2="38" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="20" cy="37" r="1.7" fill="currentColor"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Stillwater Fellowship</span>
+        <span class="brand-tag">Harney Co · Est. 2001</span>
+      </span>
+    </a>
+    <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation menu">
+    <label for="nav-toggle" class="nav-button" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="doctrine.html">Doctrine</a>
+      <a href="land.html">The Land</a>
+      <a href="packages.html">Stays</a>
+      <a href="testimonials.html">Testimonies</a>
+      <a href="faq.html">Questions</a>
+      <a href="apply.html" class="is-current">Apply</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-lead">
+  <div class="container">
+    <svg class="lead-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M8 18 L52 18 L52 48 L8 48 Z"/>
+      <path d="M8 18 L30 36 L52 18"/>
+      <circle cx="46" cy="46" r="4" fill="#6e1e15" stroke="none"/>
+    </svg>
+    <p class="eyebrow">A Letter to the Letterhouse</p>
+    <h1>Apply.</h1>
+    <p class="deck">Be plainspoken. There is no advantage in being other than honest with us.</p>
+  </div>
+</div>
+
+<figure class="featured-photo">
+  <img src="assets/typewriter.png" alt="The Letterhouse desk: an Olympia typewriter, brass desk lamp, black rotary telephone, a bound stack of unopened letters tied with twine, an open ledger written in fountain pen, and a brass key on a cord, with a window opening onto sage country at sunset.">
+  <figcaption>The Letterhouse desk. Sister Hannah's hours are Tuesday through Friday, by the bell.</figcaption>
+</figure>
+
+<section style="padding-top: clamp(1.6rem, 5vw, 2.6rem);">
+  <div class="prose">
+    <p>The page below mirrors the postal application we send on receipt of your first letter. Pilgrims who prefer to write by hand are warmly encouraged to do so; a handwritten application is, in our experience, the better predictor of a fitting Stay.</p>
+    <p>Read by Sister Hannah of the Letterhouse and, where the application progresses, by the Council. We do not share the contents of applications outside the Council. We also do not destroy them.</p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <form class="apply-form" onsubmit="event.preventDefault(); var c = document.getElementById('confirmation'); c.classList.add('is-visible'); c.scrollIntoView({behavior:'smooth', block:'center'});">
+
+    <fieldset>
+      <legend>Of yourself.</legend>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="given">Given Name(s)</label>
+          <input type="text" id="given" name="given" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="family">Family Name</label>
+          <input type="text" id="family" name="family" autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob">
+        </div>
+        <div class="field">
+          <label for="state">State of Residence</label>
+          <input type="text" id="state" name="state">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="marital">Marital Status</label>
+        <select id="marital" name="marital">
+          <option>Single, never married</option>
+          <option>Married</option>
+          <option>Separated, not yet divorced</option>
+          <option>Divorced</option>
+          <option>Widowed</option>
+          <option>Other (please describe in the postal application)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="dependents">Dependents</label>
+        <input type="text" id="dependents" name="dependents" placeholder="e.g. one daughter, age 14">
+      </div>
+
+      <div class="field">
+        <label for="employment">Current Occupation</label>
+        <input type="text" id="employment" name="employment">
+        <span class="hint">If retired, please indicate from what.</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Of your circumstance.</legend>
+
+      <div class="field">
+        <label for="postal">Postal Address (for our reply)</label>
+        <textarea id="postal" name="postal" placeholder="Street, city, state, postal code"></textarea>
+        <span class="hint">We reply by post. Mail to commercial mailbox services is not posted.</span>
+      </div>
+
+      <div class="field">
+        <label for="phone">Telephone (for the rare appointed call)</label>
+        <input type="tel" id="phone" name="phone">
+        <span class="hint">A landline is preferred. Voicemail messages are not returned.</span>
+      </div>
+
+      <div class="field">
+        <label for="referral">How did you come to know of the Fellowship?</label>
+        <textarea id="referral" name="referral" placeholder="A pilgrim's account, a family member, a chance meeting on the road"></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Of those at home.</legend>
+
+      <div class="field">
+        <label for="nok">Next of Kin</label>
+        <textarea id="nok" name="nok" placeholder="Name, relation, full contact"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="inquirers">Family members who may inquire after you during your Stay</label>
+        <textarea id="inquirers" name="inquirers" placeholder="Names and relations. Inquiries from unlisted parties will be filed without reply."></textarea>
+        <span class="hint">For the protection of pilgrims with complicated families.</span>
+      </div>
+
+      <div class="field">
+        <label>Have you discussed this Stay with your immediate family?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="discussed_family" value="yes"> Yes</label>
+          <label><input type="radio" name="discussed_family" value="no"> No</label>
+          <label><input type="radio" name="discussed_family" value="prefer"> Prefer not to say</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Have you discussed this Stay with an attorney?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="discussed_atty" value="yes"> Yes</label>
+          <label><input type="radio" name="discussed_atty" value="no"> No</label>
+          <label><input type="radio" name="discussed_atty" value="prefer"> Prefer not to say</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Of your health and your matters.</legend>
+
+      <div class="field">
+        <label for="medications">Current medications, supplements, treatments</label>
+        <textarea id="medications" name="medications" placeholder="Name, dosage, frequency, condition treated. The dispensary cannot supply what it does not know to expect."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="conditions">Significant medical conditions</label>
+        <textarea id="conditions" name="conditions" placeholder="Cardiac, endocrine, psychiatric, oncologic, neurological. Sister Hannah reads these in confidence."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Are you currently subject to any legal proceedings?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="legal" value="no"> No</label>
+          <label><input type="radio" name="legal" value="custody"> Custody / family</label>
+          <label><input type="radio" name="legal" value="civil"> Civil</label>
+          <label><input type="radio" name="legal" value="criminal"> Criminal</label>
+          <label><input type="radio" name="legal" value="multiple"> More than one</label>
+        </div>
+        <span class="hint">An honest answer is better for everyone. The Council declines pilgrims who are not forthright.</span>
+      </div>
+
+      <div class="field">
+        <label for="estate">Estimated net worth</label>
+        <select id="estate" name="estate">
+          <option>Under $50,000</option>
+          <option>$50,000 – $250,000</option>
+          <option>$250,000 – $1,000,000</option>
+          <option>$1,000,000 – $5,000,000</option>
+          <option>$5,000,000 – $25,000,000</option>
+          <option>Above $25,000,000</option>
+          <option>Prefer not to say</option>
+        </select>
+        <span class="hint">Required for the Permanent Reception. Optional for shorter Stays; some Stays may be subsidized for pilgrims of modest means at Council discretion.</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Of your intent.</legend>
+
+      <div class="field">
+        <label>Which Stay do you wish to apply for?</label>
+        <div class="radio-row" style="flex-direction: column; gap: 0.6rem; align-items: flex-start;">
+          <label><input type="radio" name="stay" value="visitation"> The Visitation — 3 nights — $1,800</label>
+          <label><input type="radio" name="stay" value="sabbatical"> The Sabbatical — 28 days — $14,500 <span class="small">(prior Visitation required)</span></label>
+          <label><input type="radio" name="stay" value="fallow"> The Fallow Season — 90 days — $42,000 <span class="small">(by invitation)</span></label>
+          <label><input type="radio" name="stay" value="permanent"> The Permanent Reception — indefinite — by audience <span class="small">(by invitation)</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="why">Why are you writing to us?</label>
+        <textarea id="why" name="why" placeholder="Plainspoken. Long enough to be honest. As short as you can make it while still being so." style="min-height: 8rem;"></textarea>
+      </div>
+    </fieldset>
+
+    <div class="consent">
+      <label>
+        <input type="checkbox" name="consent">
+        <span>I have read the <a href="doctrine.html">Doctrine</a>, the <a href="packages.html">Stays</a>, and the <a href="faq.html">Common Questions</a>. I accept the Terms of Audience, the non-refundable nature of all contributions, the Forfeiture Schedule, the conditions of property held in trust during my Stay, and the limits the Fellowship places on outside intervention during a pilgrim's process. The Council reserves the right to decline any application without explanation.</span>
+      </label>
+    </div>
+
+    <div class="cta-row">
+      <button type="submit" class="btn btn-wax">Send to the Letterhouse</button>
+    </div>
+
+    <p class="small center" style="margin-top: 1.4rem;">If you would prefer to write by hand — and we encourage it:<br><strong style="font-style: italic; color: var(--ink);">The Letterhouse · Stillwater Fellowship · P.O. Box 119 · Crane, OR 97732</strong></p>
+
+    <div id="confirmation" class="stamp-confirmation" aria-live="polite">
+      <div class="received-stamp">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <path id="arc-top" d="M 32 100 A 70 70 0 0 1 168 100" fill="none"/>
+            <path id="arc-bot" d="M 32 100 A 70 70 0 0 0 168 100" fill="none"/>
+          </defs>
+          <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="2.6"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <text class="stamp-curved" font-size="11">
+            <textPath href="#arc-top" startOffset="50%" text-anchor="middle">★  THE LETTERHOUSE  ★  CRANE OREGON  ★</textPath>
+          </text>
+          <text class="stamp-curved" font-size="9">
+            <textPath href="#arc-bot" startOffset="50%" text-anchor="middle" side="right">STILLWATER FELLOWSHIP · YEAR XXVI OF THE STILLNESS</textPath>
+          </text>
+          <text x="100" y="98" text-anchor="middle" class="stamp-big" font-size="28">RECEIVED</text>
+          <text x="100" y="120" text-anchor="middle" class="stamp-date" font-size="11">26 · IV · MMXXVI</text>
+          <line x1="38" y1="105" x2="58"  y2="105" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="142" y1="105" x2="162" y2="105" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <h3 style="font-style: italic; font-weight: 500; margin: 0 0 0.5rem;">Your inquiry has been received.</h3>
+      <p style="text-align: center; max-width: 32rem; margin: 0 auto;">The Letterhouse will respond by post within four to six weeks. We do not acknowledge receipt by other means. We thank you for the patience of the season ahead.</p>
+    </div>
+  </form>
+</section>
+
+<section>
+  <div class="container">
+    <p class="eyebrow center section-eyebrow">After the Letter</p>
+    <h2 class="section-title">What happens next.</h2>
+    <div class="prose">
+      <p><strong>One.</strong> Your inquiry is read at the Letterhouse and entered in the day's ledger.</p>
+      <p><strong>Two.</strong> Within four to six weeks you receive our reply by post — either a formal application packet or a brief and gentle letter of decline. We do not explain declines.</p>
+      <p><strong>Three.</strong> If advanced, complete the postal packet, return it with the deposit, and await our confirmation. The Council meets at the new moon; some delay is in the nature of the calendar.</p>
+      <p><strong>Four.</strong> Directions to the gatehouse, an arrival window, and the orientation reading are sent following confirmation.</p>
+      <p><strong>Five.</strong> You arrive on the agreed Sunday between two and four. The gate closes behind you. The Stay begins.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Stillwater Fellowship</p>
+      <p>Stillwater Ranch · 47 mi south of Burns, OR</p>
+      <p>P.O. Box 119, Crane, OR 97732</p>
+    </div>
+    <div>
+      <p class="footer-heading">Correspondence</p>
+      <p>Postal letters answered in 4–6 weeks. Telephone by appointment, routed through the Council.</p>
+    </div>
+    <div>
+      <p class="footer-heading">Connectivity</p>
+      <p>Cellular and wireless service is unreliable in our valley by both terrain and preference.</p>
+    </div>
+  </div>
+  <p class="footer-fineprint">© Year 26 of the Stillness · Registered private religious association under Oregon ORS 65 · All contributions non-refundable · By visiting this page you acknowledge our Terms of Audience.</p>
+</footer>
+
+</body>
+</html>
