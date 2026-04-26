@@ -150,6 +150,7 @@
             <path d="M 290 460 Q 230 380 175 290"/>
             <path d="M 175 280 Q 240 220 295 165"/>
             <path d="M 290 460 Q 250 320 215 145"/>
+            <path d="M 400 440 Q 432 400 452 360"/>
           </g>
 
           <!-- ============ buildings (drawn beneath markers) ============ -->
@@ -232,6 +233,18 @@
             <path d="M -10 6 L 10 6 L 10 -2 L 0 -8 L -10 -2 Z" fill="#f3e9cf" stroke="#5e2410" stroke-width="0.9" stroke-dasharray="2 1.5"/>
           </g>
 
+          <!-- 11. Dr. Drew's Cabin (east bench, with bronze narwhal statue) -->
+          <g transform="translate(455, 360)">
+            <!-- cabin -->
+            <path d="M -10 6 L 10 6 L 10 -2 L 0 -8 L -10 -2 Z" fill="#faf2dd" stroke="#3e3527" stroke-width="1"/>
+            <!-- narwhal statue: small pedestal with spiraled tusk, west of cabin -->
+            <rect x="-20" y="3" width="5" height="3" fill="#7a6c50" stroke="#3e3527" stroke-width="0.5"/>
+            <line x1="-17.5" y1="3" x2="-17.5" y2="-12" stroke="#3e3527" stroke-width="1"/>
+            <line x1="-19" y1="-1" x2="-16" y2="-2" stroke="#3e3527" stroke-width="0.4"/>
+            <line x1="-19" y1="-5" x2="-16" y2="-6" stroke="#3e3527" stroke-width="0.4"/>
+            <line x1="-19" y1="-9" x2="-16" y2="-10" stroke="#3e3527" stroke-width="0.4"/>
+          </g>
+
           <!-- ============ tappable markers (drawn last so they sit on top) ============ -->
 
           <a href="#building-10" aria-label="See more about the Cemetery">
@@ -303,6 +316,13 @@
             <text class="map-marker-num" x="300" y="795" text-anchor="middle" font-size="14">1</text>
           </a>
           <text class="map-label" x="240" y="816" text-anchor="end" font-size="13">the gatehouse</text>
+
+          <a href="#building-11" aria-label="See more about Dr. Drew's Cabin">
+            <circle class="marker-hit" cx="455" cy="360" r="20"/>
+            <circle class="marker-badge" cx="455" cy="360" r="13"/>
+            <text class="map-marker-num" x="455" y="365" text-anchor="middle" font-size="14">11</text>
+          </a>
+          <text class="map-label" x="455" y="392" text-anchor="middle" font-size="13">dr. drew's cabin</text>
 
           <!-- scale bar bottom-left -->
           <g transform="translate(95, 870)">
@@ -424,9 +444,30 @@
         <p class="note">Above the Refectory. Eight Stewards rest there.</p>
       </article>
 
+      <article class="building" id="building-11">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <!-- cabin -->
+          <path d="M14 32 L34 32 L34 18 L24 10 L14 18 Z"/>
+          <rect x="21" y="22" width="6" height="10"/>
+          <!-- narwhal statue: pedestal with spiraled tusk -->
+          <rect x="3" y="29" width="7" height="4"/>
+          <line x1="6.5" y1="29" x2="6.5" y2="10"/>
+          <line x1="4.8" y1="25" x2="8.2" y2="24" stroke-width="0.7"/>
+          <line x1="4.8" y1="20" x2="8.2" y2="19" stroke-width="0.7"/>
+          <line x1="4.8" y1="15" x2="8.2" y2="14" stroke-width="0.7"/>
+        </svg>
+        <p class="name">Dr. Drew's Cabin</p>
+        <p class="note">The Fellowship's physician. A bronze narwhal keeps the porch.</p>
+      </article>
+
     </div>
   </div>
 </section>
+
+<figure class="featured-photo">
+  <img src="assets/drDrewCabin.png" alt="Dr. Drew's cabin on the east bench at golden hour, with a tall bronze narwhal statue standing on a stone plinth in front, its long spiraled tusk angled toward the sky.">
+  <figcaption>Dr. Drew's cabin, east bench. The bronze narwhal — donated to the Fellowship in the eleventh year, by the doctor himself — has more than once served as a landmark in fog.</figcaption>
+</figure>
 
 <section>
   <div class="container">

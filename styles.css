@@ -353,11 +353,11 @@ p + p { margin-top: 1em; }
   pointer-events: none;
   background:
     linear-gradient(to bottom,
-      rgba(0,0,0,0.15) 0%,
-      rgba(0,0,0,0) 25%,
-      rgba(8,5,4,0.45) 65%,
-      rgba(8,5,4,0.85) 100%),
-    radial-gradient(120% 60% at 50% 100%, rgba(8,5,4,0.3) 0%, transparent 60%);
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.05) 22%,
+      rgba(8,5,4,0.62) 58%,
+      rgba(8,5,4,0.94) 100%),
+    radial-gradient(110% 55% at 50% 100%, rgba(8,5,4,0.55) 0%, transparent 65%);
   animation: vignette-breath 11s ease-in-out infinite alternate;
 }
 @keyframes vignette-breath {
@@ -461,28 +461,49 @@ p + p { margin-top: 1em; }
   margin: 0 auto;
   padding: 0 var(--gutter) clamp(2.4rem, 8vw, 5rem);
   text-align: center;
-  color: #f0e6cc;
-  text-shadow: 0 1px 18px rgba(0,0,0,0.55);
+  color: #f3ead0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85), 0 2px 22px rgba(0,0,0,0.7);
 }
 
-.hero-content .eyebrow { color: rgba(240, 230, 200, 0.85); }
+/* localized scrim behind the headline block — keeps the photo bright up top
+   while giving the text its own pool of darkness. */
+.hero-content::before {
+  content: "";
+  position: absolute;
+  inset: -8% -6% -2%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side at 50% 65%,
+    rgba(8,5,4,0.55) 0%,
+    rgba(8,5,4,0.32) 45%,
+    rgba(8,5,4,0) 80%
+  );
+  filter: blur(8px);
+}
+
+.hero-content .eyebrow {
+  color: rgba(245, 236, 210, 0.95);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
 
 .hero-content h1 {
-  color: #f5ecd2;
+  color: #f7efd6;
   font-style: italic;
   font-weight: 400;
   max-width: 14ch;
   margin: 0.4rem auto 1rem;
   font-size: clamp(2.6rem, 11vw, 5rem);
   line-height: 1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.85), 0 4px 28px rgba(0,0,0,0.65);
 }
 
 .hero-content .lede {
-  color: rgba(240, 230, 200, 0.9);
+  color: rgba(245, 236, 210, 0.96);
   max-width: 30rem;
   margin: 0 auto 1.6rem;
   font-size: clamp(1rem, 2.4vw, 1.15rem);
-  text-shadow: 0 1px 12px rgba(0,0,0,0.55);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85), 0 2px 16px rgba(0,0,0,0.65);
 }
 
 /* hero buttons — legibility against dark mountain backdrop */
