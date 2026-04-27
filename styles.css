@@ -1792,21 +1792,29 @@ html.map-open { overflow: hidden; }
 }
 
 .map-overlay-close {
+  position: relative;
   background: var(--paper);
-  color: var(--ink);
   border: 1px solid var(--ink-3);
-  font-family: var(--serif-display);
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 1;
   width: 44px;
   height: 44px;
   cursor: pointer;
   padding: 0;
-  display: grid;
-  place-items: center;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: background 0.18s ease, transform 0.22s ease;
 }
+.map-overlay-close::before,
+.map-overlay-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 1.6px;
+  background: var(--ink);
+  border-radius: 1px;
+  transform-origin: center center;
+}
+.map-overlay-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.map-overlay-close::after  { transform: translate(-50%, -50%) rotate(-45deg); }
 .map-overlay-close:hover {
   background: var(--gold);
   transform: rotate(90deg);
@@ -1849,4 +1857,17 @@ html.map-open { overflow: hidden; }
   .map-expandable::after { top: 8px; right: 8px; width: 24px; height: 24px; }
   .map-overlay-image { height: 84vh; max-width: 96vw; }
   .map-overlay-hint { font-size: 0.68rem; padding: 0.3rem 0.7rem; }
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — WebGL parchment shader
+   ────────────────────────────────────────────── */
+
+.vigil-shader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 8990;
 }
