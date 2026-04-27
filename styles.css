@@ -329,7 +329,11 @@ p + p { margin-top: 1em; }
   z-index: -1;
 }
 
-/* photographic hero — slow ambient breath, ~50s per cycle */
+/* photographic hero — slow ambient breath, ~50s per cycle.
+   The filter desaturates and darkens the photo so it stops competing
+   with the headline copy for contrast: ~70% grayscale, slight sepia
+   to keep it in palette, brightness reduced, contrast lifted to keep
+   silhouette legibility. */
 .hero-photo {
   position: absolute;
   inset: 0;
@@ -340,6 +344,7 @@ p + p { margin-top: 1em; }
   z-index: -2;
   animation: hero-breath 60s ease-in-out infinite alternate;
   transform-origin: 52% 60%;
+  filter: grayscale(0.7) sepia(0.35) brightness(0.6) contrast(1.05);
 }
 @keyframes hero-breath {
   0%   { transform: scale(1.00); }
