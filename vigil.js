@@ -152,7 +152,9 @@
     }, ms);
   }
 
-  function activateAudio() {
+  const RUNG_KEY = 'vigil:bells-rung';
+
+  function activateAudio(silent = false) {
     if (audioReady) return;
     try {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -160,8 +162,31 @@
     if (audioCtx.state === 'suspended') audioCtx.resume();
     audioReady = true;
     document.documentElement.setAttribute('data-bells', 'rung');
-    ringBell(0.05, 0.9);            // acknowledgement chime
+    if (!silent) ringBell(0.05, 0.9);   // acknowledgement chime
     scheduleNextBell();
+    try { localStorage.setItem(RUNG_KEY, '1'); } catch (_) {}
+  }
+
+  // If the visitor has rung the rope on any prior page in this site
+  // (persisted in localStorage), the next user gesture on the current
+  // page silently re-arms the AudioContext so the bells keep going
+  // without making them pull again. Browser autoplay rules still
+  // require a gesture, so we just wait for the first one.
+  function autoResumeAudio() {
+    let stored = null;
+    try { stored = localStorage.getItem(RUNG_KEY); } catch (_) {}
+    if (stored !== '1') return;
+
+    // Visually treat the rope as already rung (hide the halo).
+    document.documentElement.setAttribute('data-bells', 'rung');
+
+    const onGesture = () => {
+      activateAudio(true);
+      document.removeEventListener('pointerdown', onGesture, true);
+      document.removeEventListener('keydown', onGesture, true);
+    };
+    document.addEventListener('pointerdown', onGesture, { capture: true, once: true });
+    document.addEventListener('keydown',     onGesture, { capture: true, once: true });
   }
 
   function injectBellRope() {
@@ -720,6 +745,7 @@ void main() {
     injectClock();
     injectVeil();
     injectBellRope();
+    autoResumeAudio();
     injectMapExpander();
     injectTypewriter();
   }
