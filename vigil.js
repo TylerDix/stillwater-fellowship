@@ -336,15 +336,49 @@
       zoomTo(e.clientX, e.clientY, scale * factor);
     }, { passive: false });
 
+    function handleDoubleTap(cx, cy) {
+      img.style.transition = 'transform 0.28s ease';
+      if (scale < 2.5) {
+        zoomTo(cx, cy, 3);
+      } else {
+        tx = 0; ty = 0; scale = 1; paint();
+      }
+      setTimeout(() => { img.style.transition = ''; }, 320);
+    }
+
     // Multi-touch via Pointer Events: 1 finger pans, 2 fingers pinch-zoom.
+    // We also detect double-tap manually (via pointerdown timing) so it
+    // works on iOS Safari, where the synthesized `dblclick` event is
+    // unreliable when touch-action: none is in effect.
     const pointers = new Map();
     let pinch = null;
+    let lastTapTime = 0;
+    let lastTapX = 0, lastTapY = 0;
+    let dragStartX = 0, dragStartY = 0;
+    let dragMoved = false;
 
     overlay.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.map-overlay-close')) return;
+
+      // Detect a double-tap before adding this pointer to the active set.
+      if (pointers.size === 0) {
+        const now = Date.now();
+        const dist = Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY);
+        if (now - lastTapTime < 320 && dist < 36) {
+          handleDoubleTap(e.clientX, e.clientY);
+          lastTapTime = 0;
+          return; // don't start a drag for the second tap
+        }
+      }
+
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       try { overlay.setPointerCapture(e.pointerId); } catch (_) {}
       overlay.classList.add('dragging');
+
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      dragMoved = false;
+
       if (pointers.size === 2) {
         const [a, b] = [...pointers.values()];
         pinch = {
@@ -361,6 +395,10 @@
       const prev = pointers.get(e.pointerId);
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
+      if (Math.hypot(e.clientX - dragStartX, e.clientY - dragStartY) > 8) {
+        dragMoved = true;
+      }
+
       if (pointers.size === 2 && pinch) {
         const [a, b] = [...pointers.values()];
         const newDist = Math.hypot(b.x - a.x, b.y - a.y);
@@ -373,6 +411,16 @@
     });
 
     const releasePointer = (e) => {
+      // If this was a clean tap (single finger, no real movement), remember
+      // the time and place so the next tap within 320ms can be a double-tap.
+      if (pointers.size === 1 && !dragMoved) {
+        lastTapTime = Date.now();
+        lastTapX = e.clientX;
+        lastTapY = e.clientY;
+      } else if (dragMoved) {
+        lastTapTime = 0;
+      }
+
       pointers.delete(e.pointerId);
       try { overlay.releasePointerCapture(e.pointerId); } catch (_) {}
       if (pointers.size === 0) overlay.classList.remove('dragging');
@@ -381,17 +429,6 @@
     overlay.addEventListener('pointerup',     releasePointer);
     overlay.addEventListener('pointercancel', releasePointer);
     overlay.addEventListener('pointerleave',  releasePointer);
-
-    overlay.addEventListener('dblclick', (e) => {
-      if (e.target.closest('.map-overlay-close')) return;
-      img.style.transition = 'transform 0.28s ease';
-      if (scale < 2.5) {
-        zoomTo(e.clientX, e.clientY, 3);
-      } else {
-        tx = 0; ty = 0; scale = 1; paint();
-      }
-      setTimeout(() => { img.style.transition = ''; }, 320);
-    });
   }
 
   // ── 6. WebGL parchment shader ───────────────────────────────────────
