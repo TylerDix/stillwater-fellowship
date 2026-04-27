@@ -194,11 +194,165 @@
     document.body.appendChild(rope);
   }
 
+  // ── 5. Fullscreen parchment map (View Transitions API) ──────────────
+  function findMapFigure() {
+    const imgs = document.querySelectorAll('figure.featured-photo img');
+    for (const img of imgs) {
+      if (/map\.png(\?|$)/.test(img.getAttribute('src') || '')) {
+        return img.closest('figure.featured-photo');
+      }
+    }
+    return null;
+  }
+
+  function injectMapExpander() {
+    const figure = findMapFigure();
+    if (!figure) return;
+    figure.classList.add('map-expandable');
+    figure.setAttribute('role', 'button');
+    figure.setAttribute('tabindex', '0');
+    figure.setAttribute('aria-label',
+      'Expand the site plan to a fullscreen pan-and-zoom view');
+
+    const open = () => expandMap(figure);
+    figure.addEventListener('click', open);
+    figure.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  }
+
+  function expandMap(figure) {
+    const apply = () => {
+      figure.style.viewTransitionName = '';
+      showMapOverlay(figure);
+    };
+    figure.style.viewTransitionName = 'site-map';
+    if (document.startViewTransition) {
+      document.startViewTransition(apply);
+    } else {
+      apply();
+    }
+  }
+
+  function showMapOverlay(sourceFigure) {
+    document.documentElement.classList.add('map-open');
+    const sourceImg = sourceFigure.querySelector('img');
+    const overlay = document.createElement('div');
+    overlay.className = 'map-overlay';
+    overlay.innerHTML = `
+      <div class="map-overlay-frame" style="view-transition-name: site-map;">
+        <img class="map-overlay-image" draggable="false"
+             src="${sourceImg.getAttribute('src')}"
+             alt="${sourceImg.getAttribute('alt') || ''}">
+      </div>
+      <div class="map-overlay-controls">
+        <button class="map-overlay-close" aria-label="Close map">×</button>
+      </div>
+      <p class="map-overlay-hint">scroll to zoom · drag to pan · double-click to zoom · esc to close</p>
+    `;
+    document.body.appendChild(overlay);
+
+    const close = () => closeMap(sourceFigure, overlay, escListener);
+    function escListener(e) { if (e.key === 'Escape') close(); }
+    overlay.querySelector('.map-overlay-close').addEventListener('click', close);
+    document.addEventListener('keydown', escListener);
+
+    setupPanZoom(overlay);
+  }
+
+  function closeMap(sourceFigure, overlay, escListener) {
+    document.removeEventListener('keydown', escListener);
+    document.documentElement.classList.remove('map-open');
+    const apply = () => {
+      overlay.remove();
+      sourceFigure.style.viewTransitionName = 'site-map';
+    };
+    if (document.startViewTransition) {
+      const t = document.startViewTransition(apply);
+      t.finished.then(() => { sourceFigure.style.viewTransitionName = ''; });
+    } else {
+      overlay.remove();
+    }
+  }
+
+  function setupPanZoom(overlay) {
+    const frame = overlay.querySelector('.map-overlay-frame');
+    const img = overlay.querySelector('.map-overlay-image');
+    let scale = 1, tx = 0, ty = 0;
+
+    function paint() {
+      img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    }
+    paint();
+
+    function frameCenter() {
+      const r = frame.getBoundingClientRect();
+      return [r.left + r.width / 2, r.top + r.height / 2];
+    }
+
+    overlay.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.18 : 0.85;
+      const next = Math.max(1, Math.min(8, scale * factor));
+      if (next === scale) return;
+      const [cxI, cyI] = frameCenter();
+      const dx = e.clientX - cxI;
+      const dy = e.clientY - cyI;
+      const R = next / scale;
+      tx = dx * (1 - R) + tx * R;
+      ty = dy * (1 - R) + ty * R;
+      scale = next;
+      paint();
+    }, { passive: false });
+
+    let dragging = false, dragX = 0, dragY = 0;
+    overlay.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.map-overlay-close')) return;
+      dragging = true;
+      dragX = e.clientX; dragY = e.clientY;
+      overlay.classList.add('dragging');
+      try { overlay.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    overlay.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      tx += e.clientX - dragX;
+      ty += e.clientY - dragY;
+      dragX = e.clientX; dragY = e.clientY;
+      paint();
+    });
+    const stop = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      overlay.classList.remove('dragging');
+      try { overlay.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    overlay.addEventListener('pointerup', stop);
+    overlay.addEventListener('pointercancel', stop);
+
+    overlay.addEventListener('dblclick', (e) => {
+      if (e.target.closest('.map-overlay-close')) return;
+      const [cxI, cyI] = frameCenter();
+      const dx = e.clientX - cxI;
+      const dy = e.clientY - cyI;
+      let next;
+      if (scale < 2.5) next = 3;
+      else { tx = 0; ty = 0; scale = 1; paint(); return; }
+      const R = next / scale;
+      tx = dx * (1 - R) + tx * R;
+      ty = dy * (1 - R) + ty * R;
+      scale = next;
+      img.style.transition = 'transform 0.28s ease';
+      paint();
+      setTimeout(() => { img.style.transition = ''; }, 320);
+    });
+  }
+
   // ── boot ────────────────────────────────────────────────────────────
   function boot() {
     injectClock();
     injectVeil();
     injectBellRope();
+    injectMapExpander();
   }
 
   if (document.readyState === 'loading') {
