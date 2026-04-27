@@ -1675,6 +1675,14 @@ html, body,
   .bell-rope, .bell-rope::before, .lamps-out-veil { animation: none; }
 }
 
+/* On mobile the .site-header collapses, so the rope no longer needs to
+   clear a 4.4rem header — it hangs from the visible top of the page. */
+@media (max-width: 768px) {
+  .bell-rope {
+    top: calc(env(safe-area-inset-top, 0px) + 14px);
+  }
+}
+
 /* slightly smaller and tucked closer on phones */
 @media (max-width: 480px) {
   .bell-rope {
