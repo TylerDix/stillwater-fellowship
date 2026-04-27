@@ -1523,3 +1523,181 @@ html { scroll-behavior: smooth; }
 .center { text-align: center; }
 .italic { font-style: italic; }
 .spacer { height: 1px; }
+
+/* ──────────────────────────────────────────────
+   The Vigil
+   Time-of-day theming, lamps-out cursor, the five bells.
+   ────────────────────────────────────────────── */
+
+@property --lamp-radius {
+  syntax: '<length>';
+  initial-value: 240px;
+  inherits: false;
+}
+
+/* smooth chromatic transitions when bands change ─────────────────── */
+html, body,
+.site-header, .site-footer,
+.featured-photo, .featured-photo figcaption,
+.building, .notice, .timetable,
+.prose, .narrow, .container {
+  transition:
+    background-color 2.2s ease,
+    color 2.2s ease,
+    border-color 2.2s ease;
+}
+
+/* ── time-of-day palette overrides ─────────────────────────────────── */
+
+[data-timeofday="rising"] {
+  --paper:        #ddd2b6;
+  --paper-deep:   #c9b994;
+  --paper-card:   #e6dabc;
+  --paper-card-2: #ddd0ae;
+  --ink:          #28241b;
+  --ink-3:        #756951;
+  --shadow:       rgba(15, 12, 8, 0.30);
+  --gold:         #9c7a35;
+}
+
+[data-timeofday="morning"] {
+  /* essentially the default — slightly cooler */
+  --paper:        #ece2cc;
+  --paper-deep:   #ddcfb0;
+}
+
+[data-timeofday="midday"] {
+  --paper:        #f4ebd9;
+  --paper-deep:   #e7d9b8;
+  --paper-card:   #fcf4dd;
+  --shadow:       rgba(31, 26, 19, 0.14);
+}
+
+[data-timeofday="supper"] {
+  --paper:        #e8c98e;
+  --paper-deep:   #d5b074;
+  --paper-card:   #f1d59c;
+  --paper-card-2: #ebcb91;
+  --ink:          #2a1a0d;
+  --ink-2:        #4a2c14;
+  --gold:         #b8842c;
+  --terra:        #9c3d1b;
+  --shadow:       rgba(58, 28, 10, 0.34);
+}
+
+[data-timeofday="lampsout"] {
+  /* palette stays sane underneath; the veil dominates visually */
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* ── lamps-out veil ────────────────────────────────────────────────── */
+
+.lamps-out-veil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9500;
+  opacity: 0;
+  transition: opacity 2.6s ease-in;
+  background:
+    radial-gradient(
+      circle var(--lamp-radius, 240px) at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 198, 110, 0.10) 0%,
+      rgba(255, 162, 60, 0.04) 18%,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(8, 4, 2, 0.86) 72%,
+      rgba(2, 1, 1, 0.97) 100%
+    );
+  animation: lamp-flicker 3.8s ease-in-out infinite;
+}
+[data-timeofday="lampsout"] .lamps-out-veil { opacity: 1; }
+
+@keyframes lamp-flicker {
+  0%, 100% { --lamp-radius: 240px; }
+  37%      { --lamp-radius: 226px; }
+  61%      { --lamp-radius: 256px; }
+  82%      { --lamp-radius: 232px; }
+}
+
+/* ── the bell rope ────────────────────────────────────────────────── */
+
+.bell-rope {
+  position: fixed;
+  top: 64px;
+  right: 14px;
+  width: 24px;
+  height: 92px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--ink-2);
+  z-index: 9700;
+  transform-origin: top center;
+  animation: rope-sway 5.2s ease-in-out infinite;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18));
+  -webkit-tap-highlight-color: transparent;
+}
+.bell-rope svg { width: 100%; height: 100%; display: block; }
+.bell-rope:hover, .bell-rope:focus-visible { color: var(--terra); outline: none; }
+.bell-rope:active { transform-origin: top center; transform: rotate(7deg); }
+
+@keyframes rope-sway {
+  0%, 100% { transform: rotate(-1.3deg); }
+  50%      { transform: rotate(1.3deg); }
+}
+
+/* halo pulse to indicate audio not yet enabled */
+.bell-rope::before {
+  content: "";
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: rope-pulse 3.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes rope-pulse {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) scale(0.5); }
+  18%  { opacity: 0.55; }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.7); }
+}
+[data-bells="rung"] .bell-rope::before { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bell-rope, .bell-rope::before, .lamps-out-veil { animation: none; }
+}
+
+/* hide on very small screens to avoid overlapping the mobile nav button */
+@media (max-width: 480px) {
+  .bell-rope { top: 72px; right: 10px; width: 20px; height: 78px; }
+}
+
+/* ── "the bells say it is …" indicator ─────────────────────────────── */
+
+.bells-time {
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: inherit;
+  white-space: nowrap;
+}
+.bells-time-fallback {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  margin: 0;
+  font-family: var(--serif-rustic);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  background: var(--paper-card);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--rule-soft);
+  z-index: 100;
+}
