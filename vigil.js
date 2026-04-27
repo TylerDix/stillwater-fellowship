@@ -510,6 +510,113 @@ void main() {
     frame();
   }
 
+  // ── 7. Typewriter form (apply.html) ─────────────────────────────────
+  function injectTypewriter() {
+    const form = document.querySelector('.apply-form');
+    if (!form) return;
+    form.classList.add('typewriter-form');
+
+    // Cache one buffer of decaying noise; reuse it for clicks.
+    let clickBuffer = null;
+    function buildClickBuffer() {
+      if (!audioCtx || clickBuffer) return;
+      const dur = 0.05;
+      const sr = audioCtx.sampleRate;
+      const buf = audioCtx.createBuffer(1, Math.floor(sr * dur), sr);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (sr * 0.008));
+      }
+      clickBuffer = buf;
+    }
+
+    function playClick(volume = 1) {
+      if (!audioReady) return;
+      buildClickBuffer();
+      const src = audioCtx.createBufferSource();
+      src.buffer = clickBuffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1700 + Math.random() * 700;
+      filter.Q.value = 1.6;
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.10 * volume;
+      src.connect(filter).connect(gain).connect(audioCtx.destination);
+      src.start();
+    }
+
+    function playDing() {
+      if (!audioReady) return;
+      const t0 = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = 1180;
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(0.10, t0 + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.55);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(t0); osc.stop(t0 + 0.6);
+    }
+
+    function playStamp() {
+      if (!audioReady) return;
+      const t0 = audioCtx.currentTime;
+      // Low thud
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(110, t0);
+      osc.frequency.exponentialRampToValueAtTime(48, t0 + 0.18);
+      const og = audioCtx.createGain();
+      og.gain.setValueAtTime(0.35, t0);
+      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
+      osc.connect(og).connect(audioCtx.destination);
+      osc.start(t0); osc.stop(t0 + 0.5);
+      // Paper crinkle
+      const noise = audioCtx.createBufferSource();
+      const sr = audioCtx.sampleRate;
+      const buf = audioCtx.createBuffer(1, Math.floor(sr * 0.12), sr);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (sr * 0.04));
+      }
+      noise.buffer = buf;
+      const ng = audioCtx.createGain();
+      ng.gain.value = 0.16;
+      noise.connect(ng).connect(audioCtx.destination);
+      noise.start();
+    }
+
+    form.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'BUTTON') return;
+      if (e.key === 'Tab' || e.key.startsWith('Arrow') ||
+          e.key === 'Shift' || e.key === 'Meta' || e.key === 'Control' ||
+          e.key === 'Alt' || e.key === 'CapsLock') return;
+      if (e.key === 'Enter') { playDing(); return; }
+      playClick(0.95 + Math.random() * 0.15);
+    });
+
+    let lastFocused = null;
+    form.addEventListener('focusin', (e) => {
+      if (e.target.matches('input, textarea, select')) {
+        if (lastFocused && lastFocused !== e.target) playDing();
+        lastFocused = e.target;
+      }
+    });
+
+    form.addEventListener('submit', () => {
+      document.documentElement.classList.add('letter-sealing');
+      if (audioReady) {
+        // A staccato of last keys, then the stamp.
+        for (let i = 0; i < 5; i++) setTimeout(() => playClick(1.2), i * 65);
+        setTimeout(playStamp, 460);
+      }
+      setTimeout(() => {
+        document.documentElement.classList.remove('letter-sealing');
+      }, 2200);
+    });
+  }
+
   // ── boot ────────────────────────────────────────────────────────────
   function boot() {
     injectShader();
@@ -517,6 +624,7 @@ void main() {
     injectVeil();
     injectBellRope();
     injectMapExpander();
+    injectTypewriter();
   }
 
   if (document.readyState === 'loading') {

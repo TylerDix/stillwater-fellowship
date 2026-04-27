@@ -1871,3 +1871,69 @@ html.map-open { overflow: hidden; }
   pointer-events: none;
   z-index: 8990;
 }
+
+/* ──────────────────────────────────────────────
+   The Vigil — typewriter form (apply.html)
+   ────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+.typewriter-form input[type="text"],
+.typewriter-form input[type="tel"],
+.typewriter-form input[type="email"],
+.typewriter-form input[type="date"],
+.typewriter-form select,
+.typewriter-form textarea {
+  font-family: 'Special Elite', 'IM Fell English', 'Courier Prime', Georgia, monospace;
+  letter-spacing: 0.015em;
+  caret-color: var(--terra-deep);
+  caret-shape: block;
+}
+
+.typewriter-form textarea {
+  line-height: 1.55;
+}
+
+.typewriter-form input::placeholder,
+.typewriter-form textarea::placeholder {
+  font-family: 'Special Elite', 'IM Fell English', monospace;
+  color: var(--ink-3);
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+}
+
+/* Field focus: typewriter "carriage at this row" cue */
+.typewriter-form input:focus,
+.typewriter-form textarea:focus,
+.typewriter-form select:focus {
+  box-shadow: inset 4px 0 0 var(--wax);
+}
+
+/* ── letter-sealing flourish on submit ────────────────────────────── */
+
+html.letter-sealing .apply-form fieldset,
+html.letter-sealing .apply-form .consent,
+html.letter-sealing .apply-form .cta-row,
+html.letter-sealing .apply-form > p.small {
+  animation: letter-fold 1.0s cubic-bezier(0.6, 0, 0.4, 1) forwards;
+  pointer-events: none;
+  transform-origin: top center;
+  overflow: hidden;
+}
+
+@keyframes letter-fold {
+  0%   { transform: scaleY(1) translateY(0); opacity: 1; }
+  60%  { transform: scaleY(0.32) translateY(-8px); opacity: 0.5; }
+  100% { transform: scaleY(0) translateY(-12px); opacity: 0; max-height: 0; padding-block: 0; margin-block: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.letter-sealing .apply-form fieldset,
+  html.letter-sealing .apply-form .consent,
+  html.letter-sealing .apply-form .cta-row,
+  html.letter-sealing .apply-form > p.small {
+    animation: none;
+    transition: opacity 0.4s ease;
+    opacity: 0;
+  }
+}
