@@ -1853,10 +1853,14 @@ html.map-open { overflow: hidden; }
   padding: 0.35rem 0.9rem;
   pointer-events: none;
   z-index: 10001;
-  white-space: nowrap;
   max-width: calc(100vw - 2rem);
-  text-overflow: ellipsis;
-  overflow: hidden;
+  text-align: center;
+}
+
+.map-overlay-hint .hint-touch { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .map-overlay-hint .hint-pointer { display: none; }
+  .map-overlay-hint .hint-touch { display: inline; }
 }
 
 /* the View Transitions API morph animation timings */

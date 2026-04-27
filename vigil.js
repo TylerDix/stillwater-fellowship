@@ -273,7 +273,10 @@
       <div class="map-overlay-controls">
         <button class="map-overlay-close" aria-label="Close map"></button>
       </div>
-      <p class="map-overlay-hint">scroll to zoom · drag to pan · double-click to zoom · esc to close</p>
+      <p class="map-overlay-hint">
+        <span class="hint-pointer">scroll to zoom · drag to pan · double-click to zoom · esc to close</span>
+        <span class="hint-touch">pinch to zoom · drag to pan · double-tap to zoom · tap × to close</span>
+      </p>
     `;
     document.body.appendChild(overlay);
 
