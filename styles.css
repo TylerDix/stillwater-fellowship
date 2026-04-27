@@ -1523,3 +1523,531 @@ html { scroll-behavior: smooth; }
 .center { text-align: center; }
 .italic { font-style: italic; }
 .spacer { height: 1px; }
+
+/* ──────────────────────────────────────────────
+   The Vigil
+   Time-of-day theming, lamps-out cursor, the five bells.
+   ────────────────────────────────────────────── */
+
+@property --lamp-radius {
+  syntax: '<length>';
+  initial-value: 240px;
+  inherits: false;
+}
+
+/* smooth chromatic transitions when bands change ─────────────────── */
+html, body,
+.site-header, .site-footer,
+.featured-photo, .featured-photo figcaption,
+.building, .notice, .timetable,
+.prose, .narrow, .container {
+  transition:
+    background-color 2.2s ease,
+    color 2.2s ease,
+    border-color 2.2s ease;
+}
+
+/* ── time-of-day palette overrides ─────────────────────────────────── */
+
+[data-timeofday="rising"] {
+  --paper:        #ddd2b6;
+  --paper-deep:   #c9b994;
+  --paper-card:   #e6dabc;
+  --paper-card-2: #ddd0ae;
+  --ink:          #28241b;
+  --ink-3:        #756951;
+  --shadow:       rgba(15, 12, 8, 0.30);
+  --gold:         #9c7a35;
+}
+
+[data-timeofday="morning"] {
+  /* essentially the default — slightly cooler */
+  --paper:        #ece2cc;
+  --paper-deep:   #ddcfb0;
+}
+
+[data-timeofday="midday"] {
+  --paper:        #f4ebd9;
+  --paper-deep:   #e7d9b8;
+  --paper-card:   #fcf4dd;
+  --shadow:       rgba(31, 26, 19, 0.14);
+}
+
+[data-timeofday="supper"] {
+  --paper:        #e8c98e;
+  --paper-deep:   #d5b074;
+  --paper-card:   #f1d59c;
+  --paper-card-2: #ebcb91;
+  --ink:          #2a1a0d;
+  --ink-2:        #4a2c14;
+  --gold:         #b8842c;
+  --terra:        #9c3d1b;
+  --shadow:       rgba(58, 28, 10, 0.34);
+}
+
+[data-timeofday="lampsout"] {
+  /* palette stays sane underneath; the veil dominates visually */
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* ── lamps-out veil ────────────────────────────────────────────────── */
+
+.lamps-out-veil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9500;
+  opacity: 0;
+  transition: opacity 2.6s ease-in;
+  background:
+    radial-gradient(
+      circle var(--lamp-radius, 240px) at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 198, 110, 0.10) 0%,
+      rgba(255, 162, 60, 0.04) 18%,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(8, 4, 2, 0.86) 72%,
+      rgba(2, 1, 1, 0.97) 100%
+    );
+  animation: lamp-flicker 3.8s ease-in-out infinite;
+}
+[data-timeofday="lampsout"] .lamps-out-veil { opacity: 1; }
+
+@keyframes lamp-flicker {
+  0%, 100% { --lamp-radius: 240px; }
+  37%      { --lamp-radius: 226px; }
+  61%      { --lamp-radius: 256px; }
+  82%      { --lamp-radius: 232px; }
+}
+
+/* ── the bell rope ────────────────────────────────────────────────── */
+
+.bell-rope {
+  position: fixed;
+  /* sits below the sticky header, including iOS safe-area inset on notched devices */
+  top: calc(env(safe-area-inset-top, 0px) + 4.4rem + 14px);
+  right: calc(env(safe-area-inset-right, 0px) + 14px);
+  width: 24px;
+  height: 92px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--ink-2);
+  z-index: 9700;
+  transform-origin: top center;
+  animation: rope-sway 5.2s ease-in-out infinite;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18));
+  -webkit-tap-highlight-color: transparent;
+}
+.bell-rope svg { width: 100%; height: 100%; display: block; }
+.bell-rope:hover, .bell-rope:focus-visible { color: var(--terra); outline: none; }
+.bell-rope:active { transform-origin: top center; transform: rotate(7deg); }
+
+@keyframes rope-sway {
+  0%, 100% { transform: rotate(-1.3deg); }
+  50%      { transform: rotate(1.3deg); }
+}
+
+/* halo pulse to indicate audio not yet enabled */
+.bell-rope::before {
+  content: "";
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: rope-pulse 3.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes rope-pulse {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) scale(0.5); }
+  18%  { opacity: 0.55; }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.7); }
+}
+[data-bells="rung"] .bell-rope::before { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bell-rope, .bell-rope::before, .lamps-out-veil { animation: none; }
+}
+
+/* slightly smaller and tucked closer on phones */
+@media (max-width: 480px) {
+  .bell-rope {
+    width: 20px;
+    height: 78px;
+    right: calc(env(safe-area-inset-right, 0px) + 10px);
+  }
+}
+
+/* ── "the bells say it is …" indicator ─────────────────────────────── */
+
+.bells-time {
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: inherit;
+  white-space: nowrap;
+}
+.bells-time-fallback {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  margin: 0;
+  font-family: var(--serif-rustic);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  background: var(--paper-card);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--rule-soft);
+  z-index: 100;
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — fullscreen parchment map
+   ────────────────────────────────────────────── */
+
+.map-expandable {
+  cursor: zoom-in;
+  position: relative;
+}
+.map-expandable:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* tiny "expand" affordance in the corner of the map figure */
+.map-expandable::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  background: var(--paper);
+  border: 1px solid var(--ink-3);
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-size: 8px 1.4px, 1.4px 8px, 8px 1.4px, 1.4px 8px;
+  background-repeat: no-repeat;
+  background-position: 4px 4px, 4px 4px, calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px);
+  color: var(--ink);
+  opacity: 0.78;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  pointer-events: none;
+}
+.map-expandable:hover::after {
+  opacity: 1;
+  transform: scale(1.06);
+  background-color: var(--gold);
+}
+
+html.map-open { overflow: hidden; }
+
+.map-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(20, 14, 8, 0.94);
+  cursor: grab;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  animation: overlay-fade 0.22s ease-out;
+}
+.map-overlay.dragging { cursor: grabbing; }
+
+@keyframes overlay-fade {
+  from { background: rgba(20, 14, 8, 0); }
+  to   { background: rgba(20, 14, 8, 0.94); }
+}
+
+.map-overlay-frame {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  contain: layout paint;
+}
+
+.map-overlay-image {
+  display: block;
+  width: auto;
+  height: 90vh;
+  max-width: 92vw;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 40px rgba(0,0,0,0.55));
+  will-change: transform;
+}
+
+.map-overlay-controls {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: calc(env(safe-area-inset-right, 0px) + 14px);
+  z-index: 10001;
+}
+
+.map-overlay-close {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--ink-3);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.18s ease, transform 0.22s ease;
+}
+.map-overlay-close::before,
+.map-overlay-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 1.6px;
+  background: var(--ink);
+  border-radius: 1px;
+  transform-origin: center center;
+}
+.map-overlay-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.map-overlay-close::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+.map-overlay-close:hover {
+  background: var(--gold);
+  transform: rotate(90deg);
+}
+
+.map-overlay-hint {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--serif-rustic);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--paper);
+  letter-spacing: 0.08em;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.35rem 0.9rem;
+  pointer-events: none;
+  z-index: 10001;
+  white-space: nowrap;
+  max-width: calc(100vw - 2rem);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* the View Transitions API morph animation timings */
+@supports (view-transition-name: x) {
+  ::view-transition-group(site-map) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.4, 0.05, 0.25, 1);
+  }
+  ::view-transition-old(site-map),
+  ::view-transition-new(site-map) {
+    animation-duration: 0.5s;
+  }
+}
+
+@media (max-width: 600px) {
+  .map-expandable::after { top: 8px; right: 8px; width: 24px; height: 24px; }
+  .map-overlay-image { height: 84vh; max-width: 96vw; }
+  .map-overlay-hint { font-size: 0.68rem; padding: 0.3rem 0.7rem; }
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — WebGL parchment shader
+   ────────────────────────────────────────────── */
+
+.vigil-shader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 8990;
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — typewriter form (apply.html)
+   ────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+.typewriter-form input[type="text"],
+.typewriter-form input[type="tel"],
+.typewriter-form input[type="email"],
+.typewriter-form input[type="date"],
+.typewriter-form select,
+.typewriter-form textarea {
+  font-family: 'Special Elite', 'IM Fell English', 'Courier Prime', Georgia, monospace;
+  letter-spacing: 0.015em;
+  caret-color: var(--terra-deep);
+  caret-shape: block;
+}
+
+.typewriter-form textarea {
+  line-height: 1.55;
+}
+
+.typewriter-form input::placeholder,
+.typewriter-form textarea::placeholder {
+  font-family: 'Special Elite', 'IM Fell English', monospace;
+  color: var(--ink-3);
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+}
+
+/* Field focus: typewriter "carriage at this row" cue */
+.typewriter-form input:focus,
+.typewriter-form textarea:focus,
+.typewriter-form select:focus {
+  box-shadow: inset 4px 0 0 var(--wax);
+}
+
+/* ── letter-sealing flourish on submit ────────────────────────────── */
+
+html.letter-sealing .apply-form fieldset,
+html.letter-sealing .apply-form .consent,
+html.letter-sealing .apply-form .cta-row,
+html.letter-sealing .apply-form > p.small {
+  animation: letter-fold 1.0s cubic-bezier(0.6, 0, 0.4, 1) forwards;
+  pointer-events: none;
+  transform-origin: top center;
+  overflow: hidden;
+}
+
+@keyframes letter-fold {
+  0%   { transform: scaleY(1) translateY(0); opacity: 1; }
+  60%  { transform: scaleY(0.32) translateY(-8px); opacity: 0.5; }
+  100% { transform: scaleY(0) translateY(-12px); opacity: 0; max-height: 0; padding-block: 0; margin-block: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.letter-sealing .apply-form fieldset,
+  html.letter-sealing .apply-form .consent,
+  html.letter-sealing .apply-form .cta-row,
+  html.letter-sealing .apply-form > p.small {
+    animation: none;
+    transition: opacity 0.4s ease;
+    opacity: 0;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — drifting dust particles
+   ────────────────────────────────────────────── */
+
+.vigil-dust {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8985;
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — cross-document page transitions
+   Every same-origin navigation morphs as if
+   turning a page in a manuscript.
+   ────────────────────────────────────────────── */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.4, 0.05, 0.3, 1);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) { animation-name: vigil-page-leave; }
+::view-transition-new(root) { animation-name: vigil-page-arrive; }
+
+@keyframes vigil-page-leave {
+  0%   { opacity: 1; transform: translateX(0)    scale(1);     filter: blur(0); }
+  100% { opacity: 0; transform: translateX(-2vw) scale(0.992); filter: blur(2px); }
+}
+@keyframes vigil-page-arrive {
+  0%   { opacity: 0; transform: translateX(2vw)  scale(1.005); filter: blur(2px); }
+  100% { opacity: 1; transform: translateX(0)    scale(1);     filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 0.001s; }
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — mobile chrome
+   On phones, the sticky header bar is hidden so it
+   stops competing with the iOS Dynamic Island and
+   the notch. The hamburger floats top-left as a
+   round paper disc; the bell rope stays top-right.
+   ────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* the header bar collapses but its controls remain functional */
+  .site-header {
+    position: static;
+    background: transparent;
+    border-bottom: 0;
+    padding: 0;
+  }
+  .site-header .header-inner {
+    display: block;
+    width: auto;
+    padding: 0;
+    min-height: 0;
+    gap: 0;
+  }
+
+  /* brand stays in the footer; remove it from the top */
+  .brand { display: none; }
+
+  /* the hamburger label becomes a floating round disc */
+  .nav-button {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 14px);
+    left: calc(env(safe-area-inset-left, 0px) + 14px);
+    width: 44px;
+    height: 44px;
+    background: rgba(239, 230, 211, 0.86);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.14);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    backdrop-filter: blur(10px) saturate(1.1);
+    z-index: 9700;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .nav-button:active { transform: scale(0.94); }
+
+  /* the X state pops slightly so it reads against the open menu */
+  .nav-toggle:checked + .nav-button {
+    background: var(--paper);
+  }
+
+  /* the fullscreen menu now starts flush with the viewport,
+     padded internally to clear the island/notch */
+  .primary-nav {
+    top: 0;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 4.6rem);
+  }
+
+  /* push page content below the safe-area inset since the header
+     no longer occupies that band */
+  body {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
