@@ -1937,3 +1937,48 @@ html.letter-sealing .apply-form > p.small {
     opacity: 0;
   }
 }
+
+/* ──────────────────────────────────────────────
+   The Vigil — drifting dust particles
+   ────────────────────────────────────────────── */
+
+.vigil-dust {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8985;
+}
+
+/* ──────────────────────────────────────────────
+   The Vigil — cross-document page transitions
+   Every same-origin navigation morphs as if
+   turning a page in a manuscript.
+   ────────────────────────────────────────────── */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.4, 0.05, 0.3, 1);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) { animation-name: vigil-page-leave; }
+::view-transition-new(root) { animation-name: vigil-page-arrive; }
+
+@keyframes vigil-page-leave {
+  0%   { opacity: 1; transform: translateX(0)    scale(1);     filter: blur(0); }
+  100% { opacity: 0; transform: translateX(-2vw) scale(0.992); filter: blur(2px); }
+}
+@keyframes vigil-page-arrive {
+  0%   { opacity: 0; transform: translateX(2vw)  scale(1.005); filter: blur(2px); }
+  100% { opacity: 1; transform: translateX(0)    scale(1);     filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 0.001s; }
+}

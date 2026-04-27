@@ -617,9 +617,84 @@ void main() {
     });
   }
 
+  // ── 8. Drifting dust particles ──────────────────────────────────────
+  function injectDust() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.innerWidth < 480) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'vigil-dust';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    let dpr = 1;
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COUNT = 32;
+    const particles = [];
+    function spawn(reset) {
+      const w = window.innerWidth, h = window.innerHeight;
+      return {
+        x: Math.random() * w,
+        y: reset ? h + Math.random() * 60 : Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: -0.12 - Math.random() * 0.22,
+        r:  0.5 + Math.random() * 1.7,
+        a:  0.07 + Math.random() * 0.18,
+        drift: Math.random() * Math.PI * 2,
+      };
+    }
+    for (let i = 0; i < COUNT; i++) particles.push(spawn(false));
+
+    function bandColor() {
+      switch (currentBand()) {
+        case 'rising':   return '160, 168, 195';
+        case 'morning':  return '180, 160, 110';
+        case 'midday':   return '188, 168, 116';
+        case 'supper':   return '212, 148, 72';
+        case 'lampsout': return '232, 158, 78';
+        default:         return '180, 160, 110';
+      }
+    }
+
+    let lastT = performance.now();
+    function frame() {
+      const now = performance.now();
+      const dt = Math.min(50, now - lastT);
+      lastT = now;
+      const w = window.innerWidth, h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
+      const c = bandColor();
+      for (const p of particles) {
+        p.drift += dt * 0.0006;
+        const dx = Math.sin(p.drift) * 0.35;
+        p.x += (p.vx + dx) * dt * 0.06;
+        p.y += p.vy * dt * 0.06;
+        if (p.y < -10 || p.x < -10 || p.x > w + 10) {
+          Object.assign(p, spawn(true));
+        }
+        ctx.fillStyle = `rgba(${c}, ${p.a})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
   // ── boot ────────────────────────────────────────────────────────────
   function boot() {
     injectShader();
+    injectDust();
     injectClock();
     injectVeil();
     injectBellRope();
