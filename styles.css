@@ -1987,3 +1987,67 @@ html.letter-sealing .apply-form > p.small {
   ::view-transition-old(root),
   ::view-transition-new(root) { animation-duration: 0.001s; }
 }
+
+/* ──────────────────────────────────────────────
+   The Vigil — mobile chrome
+   On phones, the sticky header bar is hidden so it
+   stops competing with the iOS Dynamic Island and
+   the notch. The hamburger floats top-left as a
+   round paper disc; the bell rope stays top-right.
+   ────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* the header bar collapses but its controls remain functional */
+  .site-header {
+    position: static;
+    background: transparent;
+    border-bottom: 0;
+    padding: 0;
+  }
+  .site-header .header-inner {
+    display: block;
+    width: auto;
+    padding: 0;
+    min-height: 0;
+    gap: 0;
+  }
+
+  /* brand stays in the footer; remove it from the top */
+  .brand { display: none; }
+
+  /* the hamburger label becomes a floating round disc */
+  .nav-button {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 14px);
+    left: calc(env(safe-area-inset-left, 0px) + 14px);
+    width: 44px;
+    height: 44px;
+    background: rgba(239, 230, 211, 0.86);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.14);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    backdrop-filter: blur(10px) saturate(1.1);
+    z-index: 9700;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .nav-button:active { transform: scale(0.94); }
+
+  /* the X state pops slightly so it reads against the open menu */
+  .nav-toggle:checked + .nav-button {
+    background: var(--paper);
+  }
+
+  /* the fullscreen menu now starts flush with the viewport,
+     padded internally to clear the island/notch */
+  .primary-nav {
+    top: 0;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 4.6rem);
+  }
+
+  /* push page content below the safe-area inset since the header
+     no longer occupies that band */
+  body {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
