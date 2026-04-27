@@ -277,7 +277,7 @@
 
   function setupPanZoom(overlay) {
     const frame = overlay.querySelector('.map-overlay-frame');
-    const img = overlay.querySelector('.map-overlay-image');
+    const img   = overlay.querySelector('.map-overlay-image');
     let scale = 1, tx = 0, ty = 0;
 
     function paint() {
@@ -290,59 +290,81 @@
       return [r.left + r.width / 2, r.top + r.height / 2];
     }
 
+    // Zoom toward (cx, cy) in viewport coords, to absolute newScale.
+    function zoomTo(cx, cy, newScale) {
+      newScale = Math.max(1, Math.min(8, newScale));
+      if (newScale === scale) return;
+      const [cxI, cyI] = frameCenter();
+      const dx = cx - cxI;
+      const dy = cy - cyI;
+      const R = newScale / scale;
+      tx = dx * (1 - R) + tx * R;
+      ty = dy * (1 - R) + ty * R;
+      scale = newScale;
+      paint();
+    }
+
+    // Mouse wheel — desktop only.
     overlay.addEventListener('wheel', (e) => {
       e.preventDefault();
       const factor = e.deltaY < 0 ? 1.18 : 0.85;
-      const next = Math.max(1, Math.min(8, scale * factor));
-      if (next === scale) return;
-      const [cxI, cyI] = frameCenter();
-      const dx = e.clientX - cxI;
-      const dy = e.clientY - cyI;
-      const R = next / scale;
-      tx = dx * (1 - R) + tx * R;
-      ty = dy * (1 - R) + ty * R;
-      scale = next;
-      paint();
+      zoomTo(e.clientX, e.clientY, scale * factor);
     }, { passive: false });
 
-    let dragging = false, dragX = 0, dragY = 0;
+    // Multi-touch via Pointer Events: 1 finger pans, 2 fingers pinch-zoom.
+    const pointers = new Map();
+    let pinch = null;
+
     overlay.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.map-overlay-close')) return;
-      dragging = true;
-      dragX = e.clientX; dragY = e.clientY;
-      overlay.classList.add('dragging');
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       try { overlay.setPointerCapture(e.pointerId); } catch (_) {}
+      overlay.classList.add('dragging');
+      if (pointers.size === 2) {
+        const [a, b] = [...pointers.values()];
+        pinch = {
+          dist: Math.hypot(b.x - a.x, b.y - a.y),
+          cx:   (a.x + b.x) / 2,
+          cy:   (a.y + b.y) / 2,
+          startScale: scale,
+        };
+      }
     });
+
     overlay.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
-      tx += e.clientX - dragX;
-      ty += e.clientY - dragY;
-      dragX = e.clientX; dragY = e.clientY;
-      paint();
+      if (!pointers.has(e.pointerId)) return;
+      const prev = pointers.get(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pointers.size === 2 && pinch) {
+        const [a, b] = [...pointers.values()];
+        const newDist = Math.hypot(b.x - a.x, b.y - a.y);
+        zoomTo(pinch.cx, pinch.cy, pinch.startScale * (newDist / pinch.dist));
+      } else if (pointers.size === 1) {
+        tx += e.clientX - prev.x;
+        ty += e.clientY - prev.y;
+        paint();
+      }
     });
-    const stop = (e) => {
-      if (!dragging) return;
-      dragging = false;
-      overlay.classList.remove('dragging');
+
+    const releasePointer = (e) => {
+      pointers.delete(e.pointerId);
       try { overlay.releasePointerCapture(e.pointerId); } catch (_) {}
+      if (pointers.size === 0) overlay.classList.remove('dragging');
+      if (pointers.size < 2)   pinch = null;
     };
-    overlay.addEventListener('pointerup', stop);
-    overlay.addEventListener('pointercancel', stop);
+    overlay.addEventListener('pointerup',     releasePointer);
+    overlay.addEventListener('pointercancel', releasePointer);
+    overlay.addEventListener('pointerleave',  releasePointer);
 
     overlay.addEventListener('dblclick', (e) => {
       if (e.target.closest('.map-overlay-close')) return;
-      const [cxI, cyI] = frameCenter();
-      const dx = e.clientX - cxI;
-      const dy = e.clientY - cyI;
-      let next;
-      if (scale < 2.5) next = 3;
-      else { tx = 0; ty = 0; scale = 1; paint(); return; }
-      const R = next / scale;
-      tx = dx * (1 - R) + tx * R;
-      ty = dy * (1 - R) + ty * R;
-      scale = next;
       img.style.transition = 'transform 0.28s ease';
-      paint();
+      if (scale < 2.5) {
+        zoomTo(e.clientX, e.clientY, 3);
+      } else {
+        tx = 0; ty = 0; scale = 1; paint();
+      }
       setTimeout(() => { img.style.transition = ''; }, 320);
     });
   }

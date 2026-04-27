@@ -1623,8 +1623,9 @@ html, body,
 
 .bell-rope {
   position: fixed;
-  top: 64px;
-  right: 14px;
+  /* sits below the sticky header, including iOS safe-area inset on notched devices */
+  top: calc(env(safe-area-inset-top, 0px) + 4.4rem + 14px);
+  right: calc(env(safe-area-inset-right, 0px) + 14px);
   width: 24px;
   height: 92px;
   background: transparent;
@@ -1674,9 +1675,13 @@ html, body,
   .bell-rope, .bell-rope::before, .lamps-out-veil { animation: none; }
 }
 
-/* hide on very small screens to avoid overlapping the mobile nav button */
+/* slightly smaller and tucked closer on phones */
 @media (max-width: 480px) {
-  .bell-rope { top: 72px; right: 10px; width: 20px; height: 78px; }
+  .bell-rope {
+    width: 20px;
+    height: 78px;
+    right: calc(env(safe-area-inset-right, 0px) + 10px);
+  }
 }
 
 /* ── "the bells say it is …" indicator ─────────────────────────────── */
